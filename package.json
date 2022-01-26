@@ -1,6 +1,6 @@
 {
   "name": "@shelf/fast-normalize-spaces",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A faster (by 3-15x) implementation of \"normalize-space-x\" package that uses at least 10x less RAM",
   "license": "MIT",
   "author": {
