@@ -1,6 +1,8 @@
 // @ts-ignore
 import {list} from 'white-space-x';
 
+const whiteSpaceSet = new Set<string>(list.map((item: {string: string}) => item.string));
+
 /**
  * This method strips leading and trailing white-space from a string,
  * replaces sequences of whitespace characters by a single space,
@@ -14,18 +16,37 @@ export function normalizeSpaces(string: string): string {
 }
 
 function replaceAllWhitespaces(string: string): string {
-  let finalString = '';
+  const nonWhiteSpaceStrings = [];
 
-  for (const item of list) {
-    const firstIndex = string.indexOf(item.string);
-    const lastIndex = string.lastIndexOf(item.string);
+  let currentIsWhiteSpace = true;
+  let firstNonWhiteSpaceIndex = -1;
+  let lastNonWhiteSpaceIndex = -1;
+  for (let i = 0; i < string.length; i++) {
+    const char = string[i];
+    const isWhitespace = whiteSpaceSet.has(char);
 
-    if (firstIndex === lastIndex) {
-      continue;
+    if (isWhitespace) {
+      if (currentIsWhiteSpace) {
+        continue;
+      } else {
+        const sub = string.substring(firstNonWhiteSpaceIndex, lastNonWhiteSpaceIndex + 1);
+        nonWhiteSpaceStrings.push(sub);
+        currentIsWhiteSpace = true;
+      }
+    } else {
+      if (currentIsWhiteSpace) {
+        currentIsWhiteSpace = false;
+        firstNonWhiteSpaceIndex = i;
+        lastNonWhiteSpaceIndex = i;
+      } else {
+        lastNonWhiteSpaceIndex = i;
+      }
     }
-
-    finalString = `${string.substring(0, firstIndex)} ${string.substring(lastIndex + 1)}`;
+  }
+  if (!currentIsWhiteSpace) {
+    const sub = string.substring(firstNonWhiteSpaceIndex, lastNonWhiteSpaceIndex + 1);
+    nonWhiteSpaceStrings.push(sub);
   }
 
-  return finalString;
+  return nonWhiteSpaceStrings.join(' ');
 }
