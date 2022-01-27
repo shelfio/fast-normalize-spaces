@@ -10,6 +10,12 @@ it('should normalize spaces', () => {
   expect(normalizeSpaces('   hello     \n\n\n   \n \n \t world   ')).toEqual('hello world');
 });
 
+it('should normalize spaces correctly', () => {
+  expect(normalizeSpaces('   hello     \n\n\n  interesting   \n \n \t world   ')).toEqual(
+    'hello interesting world'
+  );
+});
+
 it('should use much less RAM', () => {
   const memoryStartFastVersion = process.memoryUsage();
   normalizeSpaces(words5000000);
