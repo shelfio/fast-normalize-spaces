@@ -22,14 +22,14 @@ it('should use much less RAM', () => {
   const memoryEndFastVersion = process.memoryUsage();
   const memoryUsedFastVersion =
     (memoryEndFastVersion.rss - memoryStartFastVersion.rss) / 1024 / 1024;
-  console.log(`Memory used slow version: ${memoryUsedFastVersion}`);
+  console.log(`Memory used fast version: ${memoryUsedFastVersion}`);
 
   const memoryStartSlowVersion = process.memoryUsage();
   normalizeSpaceX(words5000000);
   const memoryEndSlowVersion = process.memoryUsage();
   const memoryUsedSlowVersion =
     (memoryEndSlowVersion.rss - memoryStartSlowVersion.rss) / 1024 / 1024;
-  console.log(`Memory used fast version: ${memoryUsedSlowVersion}`);
+  console.log(`Memory used slow version: ${memoryUsedSlowVersion}`);
 
   expect(memoryUsedSlowVersion / memoryUsedFastVersion).toBeGreaterThan(5);
 });
