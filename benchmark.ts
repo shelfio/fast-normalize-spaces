@@ -3,7 +3,14 @@ import benny from 'benny';
 import fLI from 'fast-lorem-ipsum';
 // @ts-ignore
 import normalizeSpaceX from 'normalize-space-x';
-import {normalizeSpaces1, normalizeSpaces2, normalizeSpaces3, normalizeSpaces4} from './lib';
+import {
+  normalizeSpaces1,
+  normalizeSpaces2,
+  normalizeSpaces3,
+  normalizeSpaces4,
+  normalizeSpaces5,
+  normalizeSpaces6,
+} from './lib';
 
 // const words5000 = fLI(5000, 'w');
 const words50000 = fLI(50000, 'w');
@@ -31,6 +38,14 @@ benny.suite(
   benny.cycle(),
   benny.add('fast-impl-4', () => {
     normalizeSpaces4(words50000);
+  }),
+  benny.cycle(),
+  benny.add('fast-impl-5', () => {
+    normalizeSpaces5(words50000);
+  }),
+  benny.cycle(),
+  benny.add('fast-impl-6', () => {
+    normalizeSpaces6(words50000);
   }),
   benny.cycle(),
   benny.add('normalize-space-x', () => {

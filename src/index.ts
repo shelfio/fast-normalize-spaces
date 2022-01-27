@@ -1,7 +1,9 @@
 // @ts-ignore
 import {list} from 'white-space-x';
+import {Buffer} from 'buffer';
 
 const whiteSpaceSet = new Set<string>(list.map((item: {string: string}) => item.string));
+const whiteSpaceCodeSet = new Set<number>(list.map((item: {code: number}) => item.code));
 const whiteSpaceChars = list.map((item: {string: string}) => item.string).join('');
 
 const nonWhiteSpaceRe = new RegExp(`[^${whiteSpaceChars}]+`, 'g');
@@ -16,7 +18,7 @@ const whiteSpaceRe = new RegExp(`[${whiteSpaceChars}]+`, 'g');
  * @throws {TypeError} If string is null or undefined or not coercible.
  */
 export function normalizeSpaces(string: string): string {
-  return replaceAllWhitespacesImpl4(string.trim());
+  return replaceAllWhitespacesImpl6(string.trim());
 }
 
 export function normalizeSpaces1(string: string): string {
@@ -33,6 +35,14 @@ export function normalizeSpaces3(string: string): string {
 
 export function normalizeSpaces4(string: string): string {
   return replaceAllWhitespacesImpl4(string.trim());
+}
+
+export function normalizeSpaces5(string: string): string {
+  return replaceAllWhitespacesImpl5(string.trim());
+}
+
+export function normalizeSpaces6(string: string): string {
+  return replaceAllWhitespacesImpl6(string.trim());
 }
 
 function replaceAllWhitespacesImpl1(string: string): string {
@@ -100,4 +110,31 @@ function replaceAllWhitespacesImpl3(string: string): string {
 function replaceAllWhitespacesImpl4(string: string): string {
   // that's library's impl, but for some reason it's 15-20 % faster
   return string.replace(whiteSpaceRe, ' ');
+}
+
+function replaceAllWhitespacesImpl5(string: string): string {
+  return string.split(whiteSpaceRe).join(' ');
+}
+
+function replaceAllWhitespacesImpl6(string: string): string {
+  // this actually has 2x smaller memory footprint, but is slower :)
+  const bufferFrom = Buffer.from(string, 'utf-8');
+  const bufferTo = Buffer.alloc(bufferFrom.length + 1, ' ', 'utf-8');
+
+  let lastIsWhiteSpace = false;
+  let index = 0;
+  for (const charCode of bufferFrom) {
+    const isWhitespace = whiteSpaceCodeSet.has(charCode);
+
+    if (!isWhitespace) {
+      if (lastIsWhiteSpace) {
+        bufferTo.writeUInt16LE(0x0020, index++);
+      }
+      bufferTo.writeUInt16LE(charCode, index++);
+    }
+
+    lastIsWhiteSpace = isWhitespace;
+  }
+
+  return bufferTo.toString('utf-8', 0, index);
 }

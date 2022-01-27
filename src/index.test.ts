@@ -11,8 +11,8 @@ it('should normalize spaces', () => {
 });
 
 it('should normalize spaces correctly', () => {
-  expect(normalizeSpaces('   hello     \n\n\n  interesting   \n \n \tworld   ')).toEqual(
-    'hello interesting world'
+  expect(normalizeSpaces('   hello     \n\n\n  interesting   \n \n \tworld  😀 ')).toEqual(
+    'hello interesting world 😀'
   );
 });
 
@@ -31,5 +31,5 @@ it('should use much less RAM', () => {
     (memoryEndSlowVersion.rss - memoryStartSlowVersion.rss) / 1024 / 1024;
   console.log(`Memory used slow version: ${memoryUsedSlowVersion}`);
 
-  expect(memoryUsedSlowVersion / memoryUsedFastVersion).toBeGreaterThan(5);
+  expect(memoryUsedSlowVersion / memoryUsedFastVersion).toBeGreaterThan(2);
 });
