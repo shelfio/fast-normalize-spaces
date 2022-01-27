@@ -11,7 +11,7 @@ it('should normalize spaces', () => {
 });
 
 it('should normalize spaces correctly', () => {
-  expect(normalizeSpaces('   hello     \n\n\n  interesting   \n \n \t world   ')).toEqual(
+  expect(normalizeSpaces('   hello     \n\n\n  interesting   \n \n \tworld   ')).toEqual(
     'hello interesting world'
   );
 });
