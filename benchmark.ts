@@ -10,6 +10,7 @@ import {
   normalizeSpaces4,
   normalizeSpaces5,
   normalizeSpaces6,
+  normalizeSpaces7,
 } from './lib';
 
 // const words5000 = fLI(5000, 'w');
@@ -46,6 +47,10 @@ benny.suite(
   benny.cycle(),
   benny.add('fast-impl-6', () => {
     normalizeSpaces6(words50000);
+  }),
+  benny.cycle(),
+  benny.add('fast-impl-7', () => {
+    normalizeSpaces7(words50000);
   }),
   benny.cycle(),
   benny.add('normalize-space-x', () => {
