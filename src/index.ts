@@ -1,6 +1,7 @@
 // @ts-ignore
 import {list} from 'white-space-x';
 import {Buffer} from 'buffer';
+import intoStream from 'into-stream';
 
 const whiteSpaceSet = new Set<string>(list.map((item: {string: string}) => item.string));
 const whiteSpaceCodeSet = new Set<number>(list.map((item: {code: number}) => item.code));
@@ -177,6 +178,31 @@ function replaceAllWhitespacesImpl6(string: string): string {
   }
 
   return bufferTo.toString('utf-8', 0, index);
+}
+
+export async function normalizeSpaces8(string: string): Promise<string> {
+  const stringStream = intoStream(string);
+
+  let chunk;
+
+  await new Promise(resolve => stringStream.on('readable', resolve));
+
+  let resultingString = '';
+
+  while (null !== (chunk = stringStream.read(string.length > 8192 ? 8192 : string.length))) {
+    const chunkStr = chunk.toString();
+    const normalizedStringChunk = normalizeSpaces7(chunkStr);
+    resultingString += normalizedStringChunk;
+
+    if (
+      isWhiteSpaceCharCode(chunkStr.charCodeAt(chunkStr.length - 1)) &&
+      !isWhiteSpaceCharCode(resultingString.charCodeAt(resultingString.length - 1))
+    ) {
+      resultingString += ' ';
+    }
+  }
+
+  return resultingString.trim();
 }
 
 function isWhiteSpaceCharCode(charCode: number): boolean {

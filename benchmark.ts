@@ -11,6 +11,7 @@ import {
   normalizeSpaces5,
   normalizeSpaces6,
   normalizeSpaces7,
+  normalizeSpaces8,
 } from './lib';
 
 const words5000 = fLI(5000, 'w');
@@ -139,6 +140,24 @@ benny.suite(
   }),
   benny.add('~33 mb', () => {
     normalizeSpaces7(words5000000);
+  }),
+  benny.cycle(),
+  benny.complete()
+);
+
+benny.suite(
+  'normalizeSpaces8',
+  benny.add('~33 kb', async () => {
+    await normalizeSpaces8(words5000);
+  }),
+  benny.add('~330 kb', async () => {
+    await normalizeSpaces8(words50000);
+  }),
+  benny.add('~3.3 mb', async () => {
+    await normalizeSpaces8(words500000);
+  }),
+  benny.add('~33 mb', async () => {
+    await normalizeSpaces8(words5000000);
   }),
   benny.cycle(),
   benny.complete()
