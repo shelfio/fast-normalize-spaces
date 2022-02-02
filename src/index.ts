@@ -73,7 +73,9 @@ export function normalizeSpaces7(string: string): string {
     isLastCharWhitespace = isWhitespace;
   }
 
-  // Removes whitespaces from both ends of a string
+  // If the original string has whitespaces at the start or at the end, the first and the
+  // last processed chars should be single whitespaces, so we need to make offset from both
+  // ends to trim they
   const firstChar = processedChars[0];
   const lastChar = processedChars[lastProcessedIndex];
 
