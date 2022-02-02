@@ -9,6 +9,8 @@ const whiteSpaceChars = list.map((item: {string: string}) => item.string).join('
 const nonWhiteSpaceRe = new RegExp(`[^${whiteSpaceChars}]+`, 'g');
 const whiteSpaceRe = new RegExp(`[${whiteSpaceChars}]+`, 'g');
 
+const SPACE_CODE = 32;
+
 /**
  * This method strips leading and trailing white-space from a string,
  * replaces sequences of whitespace characters by a single space,
@@ -43,6 +45,68 @@ export function normalizeSpaces5(string: string): string {
 
 export function normalizeSpaces6(string: string): string {
   return replaceAllWhitespacesImpl6(string.trim());
+}
+
+export function normalizeSpaces7(string: string): string {
+  const chars = Buffer.from(string);
+  const processedChars = Buffer.alloc(chars.length, SPACE_CODE);
+
+  let lastProcessedIndex = -1;
+  let isLastCharWhitespace = false;
+
+  for (let i = 0; i < chars.length; i++) {
+    const char = chars[i];
+    const isWhitespace =
+      char === 32 ||
+      char === 10 ||
+      char === 11 ||
+      char === 12 ||
+      char === 13 ||
+      char === 9 ||
+      char === 160 ||
+      char === 5760 ||
+      char === 6158 ||
+      char === 8192 ||
+      char === 8193 ||
+      char === 8194 ||
+      char === 8195 ||
+      char === 8196 ||
+      char === 8197 ||
+      char === 8198 ||
+      char === 8199 ||
+      char === 8200 ||
+      char === 8201 ||
+      char === 8202 ||
+      char === 8232 ||
+      char === 8233 ||
+      char === 8239 ||
+      char === 8287 ||
+      char === 12288 ||
+      char === 65279;
+
+    if (!isWhitespace) {
+      lastProcessedIndex++;
+
+      processedChars[lastProcessedIndex] = char;
+    } else {
+      if (isLastCharWhitespace) {
+        continue;
+      }
+
+      lastProcessedIndex++;
+    }
+
+    isLastCharWhitespace = isWhitespace;
+  }
+
+  // Removes whitespaces from both ends of a string
+  const firstChar = processedChars[0];
+  const lastChar = processedChars[lastProcessedIndex];
+
+  const startIndex = firstChar === SPACE_CODE ? 1 : 0;
+  const endIndex = lastChar === SPACE_CODE ? lastProcessedIndex : lastProcessedIndex + 1;
+
+  return processedChars.toString('utf-8', startIndex, endIndex);
 }
 
 function replaceAllWhitespacesImpl1(string: string): string {
