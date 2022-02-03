@@ -184,23 +184,24 @@ export async function normalizeSpaces8(string: string): Promise<string> {
   const stringStream = intoStream(string);
 
   let chunk;
-
-  await new Promise(resolve => stringStream.on('readable', resolve));
-
   let resultingString = '';
 
-  while (null !== (chunk = stringStream.read(string.length > 8192 ? 8192 : string.length))) {
-    const chunkStr = chunk.toString();
-    const normalizedStringChunk = normalizeSpaces7(chunkStr);
-    resultingString += normalizedStringChunk;
+  stringStream.on('readable', () => {
+    while (null !== (chunk = stringStream.read(string.length > 8192 ? 8192 : string.length))) {
+      const chunkStr = chunk.toString();
+      const normalizedStringChunk = normalizeSpaces7(chunkStr);
+      resultingString += normalizedStringChunk;
 
-    if (
-      isWhiteSpaceCharCode(chunkStr.charCodeAt(chunkStr.length - 1)) &&
-      !isWhiteSpaceCharCode(resultingString.charCodeAt(resultingString.length - 1))
-    ) {
-      resultingString += ' ';
+      if (
+        isWhiteSpaceCharCode(chunkStr.charCodeAt(chunkStr.length - 1)) &&
+        !isWhiteSpaceCharCode(resultingString.charCodeAt(resultingString.length - 1))
+      ) {
+        resultingString += ' ';
+      }
     }
-  }
+  });
+
+  await new Promise(resolve => stringStream.on('end', resolve));
 
   return resultingString.trim();
 }
