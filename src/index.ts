@@ -8,6 +8,12 @@ const whiteSpaceCodeSet = new Set<number>(list.map((item: {code: number}) => ite
 const whiteSpaceChars = list.map((item: {string: string}) => item.string).join('');
 
 const whiteSpaceIndexedArray = Array.from({length: 0xffff}, (_, i) => whiteSpaceCodeSet.has(i));
+const whiteSpaceIndexedUint8Array = new Uint8Array(65535).map((_, i) =>
+  whiteSpaceCodeSet.has(i) ? 1 : 0
+);
+const whiteSpaceNumberIndexArray = Buffer.alloc(65535).map((_, i) =>
+  whiteSpaceCodeSet.has(i) ? 1 : 0
+);
 
 const nonWhiteSpaceRe = new RegExp(`[^${whiteSpaceChars}]+`, 'g');
 const whiteSpaceRe = new RegExp(`[${whiteSpaceChars}]+`, 'g');
@@ -208,9 +214,121 @@ export async function normalizeSpaces8(string: string): Promise<string> {
   return resultingString.trim();
 }
 
-function isWhiteSpaceCharCode(charCode: number): boolean {
-  return whiteSpaceIndexedArray[charCode];
+export function normalizeSpaces9(string: string): string {
+  const chars = Buffer.from(string);
+  const processedChars = Buffer.alloc(chars.length, SPACE_CODE);
 
+  let lastProcessedIndex = -1;
+  let isLastCharWhitespace = false;
+
+  for (let i = 0; i < chars.length; i++) {
+    const char = chars[i];
+    const isWhitespace = isWhiteSpaceCharCodeIndexedArray(char);
+
+    if (!isWhitespace) {
+      lastProcessedIndex++;
+
+      processedChars[lastProcessedIndex] = char;
+    } else {
+      if (isLastCharWhitespace) {
+        continue;
+      }
+
+      lastProcessedIndex++;
+    }
+
+    isLastCharWhitespace = isWhitespace;
+  }
+
+  // If the original string has whitespaces at the start or at the end, the first and the
+  // last processed chars should be single whitespaces, so we need to make offset from both
+  // ends to trim they
+  const firstChar = processedChars[0];
+  const lastChar = processedChars[lastProcessedIndex];
+
+  const startIndex = firstChar === SPACE_CODE ? 1 : 0;
+  const endIndex = lastChar === SPACE_CODE ? lastProcessedIndex : lastProcessedIndex + 1;
+
+  return processedChars.toString('utf-8', startIndex, endIndex);
+}
+
+export function normalizeSpaces10(string: string): string {
+  const chars = Buffer.from(string);
+  const processedChars = Buffer.alloc(chars.length, SPACE_CODE);
+
+  let lastProcessedIndex = -1;
+  let isLastCharWhitespace = 0;
+
+  for (let i = 0; i < chars.length; i++) {
+    const char = chars[i];
+    const isWhitespace = isWhiteSpaceCharCodeNumber(char);
+
+    if (!isWhitespace) {
+      lastProcessedIndex++;
+
+      processedChars[lastProcessedIndex] = char;
+    } else {
+      if (isLastCharWhitespace) {
+        continue;
+      }
+
+      lastProcessedIndex++;
+    }
+
+    isLastCharWhitespace = isWhitespace;
+  }
+
+  // If the original string has whitespaces at the start or at the end, the first and the
+  // last processed chars should be single whitespaces, so we need to make offset from both
+  // ends to trim they
+  const firstChar = processedChars[0];
+  const lastChar = processedChars[lastProcessedIndex];
+
+  const startIndex = firstChar === SPACE_CODE ? 1 : 0;
+  const endIndex = lastChar === SPACE_CODE ? lastProcessedIndex : lastProcessedIndex + 1;
+
+  return processedChars.toString('utf-8', startIndex, endIndex);
+}
+
+export function normalizeSpaces11(string: string): string {
+  const chars = Buffer.from(string);
+  const processedChars = Buffer.alloc(chars.length, SPACE_CODE);
+
+  let lastProcessedIndex = -1;
+  let isLastCharWhitespace = 0;
+
+  for (let i = 0; i < chars.length; i++) {
+    const char = chars[i];
+    const isWhitespace = isWhiteSpaceCharCodeIndexedUint8Array(char);
+
+    if (!isWhitespace) {
+      lastProcessedIndex++;
+
+      processedChars[lastProcessedIndex] = char;
+    } else {
+      if (isLastCharWhitespace) {
+        continue;
+      }
+
+      lastProcessedIndex++;
+    }
+
+    isLastCharWhitespace = isWhitespace;
+  }
+
+  // If the original string has whitespaces at the start or at the end, the first and the
+  // last processed chars should be single whitespaces, so we need to make offset from both
+  // ends to trim they
+  const firstChar = processedChars[0];
+  const lastChar = processedChars[lastProcessedIndex];
+
+  const startIndex = firstChar === SPACE_CODE ? 1 : 0;
+  const endIndex = lastChar === SPACE_CODE ? lastProcessedIndex : lastProcessedIndex + 1;
+
+  return processedChars.toString('utf-8', startIndex, endIndex);
+}
+
+function isWhiteSpaceCharCode(charCode: number): boolean {
   if (charCode >= 9 && charCode <= 13) {
     return true;
   }
@@ -240,4 +358,16 @@ function isWhiteSpaceCharCode(charCode: number): boolean {
   }
 
   return charCode === 12288 || charCode === 65279;
+}
+
+function isWhiteSpaceCharCodeIndexedArray(charCode: number): boolean {
+  return whiteSpaceIndexedArray[charCode];
+}
+
+function isWhiteSpaceCharCodeNumber(charCode: number): number {
+  return whiteSpaceNumberIndexArray[charCode];
+}
+
+function isWhiteSpaceCharCodeIndexedUint8Array(charCode: number): number {
+  return whiteSpaceIndexedUint8Array[charCode];
 }
