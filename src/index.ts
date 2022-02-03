@@ -7,6 +7,8 @@ const whiteSpaceSet = new Set<string>(list.map((item: {string: string}) => item.
 const whiteSpaceCodeSet = new Set<number>(list.map((item: {code: number}) => item.code));
 const whiteSpaceChars = list.map((item: {string: string}) => item.string).join('');
 
+const whiteSpaceIndexedArray = Array.from({length: 0xffff}, (_, i) => whiteSpaceCodeSet.has(i));
+
 const nonWhiteSpaceRe = new RegExp(`[^${whiteSpaceChars}]+`, 'g');
 const whiteSpaceRe = new RegExp(`[${whiteSpaceChars}]+`, 'g');
 
@@ -207,6 +209,8 @@ export async function normalizeSpaces8(string: string): Promise<string> {
 }
 
 function isWhiteSpaceCharCode(charCode: number): boolean {
+  return whiteSpaceIndexedArray[charCode];
+
   if (charCode >= 9 && charCode <= 13) {
     return true;
   }

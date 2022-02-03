@@ -14,7 +14,7 @@
     "lib"
   ],
   "scripts": {
-    "benchmark": "babel benchmark.ts | node",
+    "benchmark": "yarn build && babel benchmark.ts | node",
     "build": "rm -rf lib/ && yarn build:types && yarn build:code",
     "build:code": "babel src --out-dir lib --ignore '**/*.test.ts' --extensions '.ts' && find ./lib -name '*.test.d.ts' -delete",
     "build:types": "tsc --emitDeclarationOnly --declaration --isolatedModules false --declarationDir lib",
