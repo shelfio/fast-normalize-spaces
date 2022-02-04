@@ -2,6 +2,7 @@
 import {list} from 'white-space-x';
 import {Buffer} from 'buffer';
 import intoStream from 'into-stream';
+import {execSync} from 'child_process';
 
 const whiteSpaceSet = new Set<string>(list.map((item: {string: string}) => item.string));
 const whiteSpaceCodeSet = new Set<number>(list.map((item: {code: number}) => item.code));
@@ -326,6 +327,15 @@ export function normalizeSpaces11(string: string): string {
   const endIndex = lastChar === SPACE_CODE ? lastProcessedIndex : lastProcessedIndex + 1;
 
   return processedChars.toString('utf-8', startIndex, endIndex);
+}
+
+export function normalizeSpaces12(filePath: string): string {
+  const res = execSync(
+    `cat ${filePath} | tr -s "[:space:]" | tr "[:space:][:space:]" " " | tr -s "[:space:]"`,
+    {maxBuffer: 999999999999}
+  );
+
+  return res.toString('utf-8').trim();
 }
 
 function isWhiteSpaceCharCode(charCode: number): boolean {

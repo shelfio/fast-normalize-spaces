@@ -3,10 +3,14 @@ import benny from 'benny';
 import fLI from 'fast-lorem-ipsum';
 // @ts-ignore
 import normalizeSpaceX from 'normalize-space-x';
+import fs, {mkdtempSync} from 'fs';
+import path from 'path';
+import os from 'os';
 import {
   normalizeSpaces1,
   normalizeSpaces10,
   normalizeSpaces11,
+  normalizeSpaces12,
   normalizeSpaces2,
   normalizeSpaces3,
   normalizeSpaces4,
@@ -21,6 +25,20 @@ const words5000 = fLI(5000, 'w');
 const words50000 = fLI(50000, 'w');
 const words500000 = fLI(500000, 'w');
 const words5000000 = fLI(5000000, 'w');
+
+const folderPath = mkdtempSync(path.join(os.tmpdir(), 'normalize-spaces-'));
+
+const filePath33kb = path.join(folderPath, `file-${Math.random()}.txt`);
+fs.writeFileSync(filePath33kb, words5000);
+
+const filePath330kb = path.join(words50000, `file-${Math.random()}.txt`);
+fs.writeFileSync(filePath330kb, words50000);
+
+const filePath3mb = path.join(words500000, `file-${Math.random()}.txt`);
+fs.writeFileSync(filePath3mb, words500000);
+
+const filePath33mb = path.join(words5000000, `file-${Math.random()}.txt`);
+fs.writeFileSync(filePath33mb, words5000000);
 
 benny.suite(
   '~33 kb',
@@ -59,6 +77,9 @@ benny.suite(
   }),
   benny.add('normalizeSpaces11', () => {
     normalizeSpaces11(words5000);
+  }),
+  benny.add('normalizeSpaces12', () => {
+    normalizeSpaces12(filePath33kb);
   }),
   benny.cycle(),
   benny.complete()
@@ -102,6 +123,9 @@ benny.suite(
   benny.add('normalizeSpaces11', () => {
     normalizeSpaces11(words50000);
   }),
+  benny.add('normalizeSpaces12', () => {
+    normalizeSpaces12(filePath330kb);
+  }),
   benny.cycle(),
   benny.complete()
 );
@@ -144,6 +168,9 @@ benny.suite(
   benny.add('normalizeSpaces11', () => {
     normalizeSpaces11(words500000);
   }),
+  benny.add('normalizeSpaces12', () => {
+    normalizeSpaces12(filePath3mb);
+  }),
   benny.cycle(),
   benny.complete()
 );
@@ -185,6 +212,9 @@ benny.suite(
   }),
   benny.add('normalizeSpaces11', () => {
     normalizeSpaces11(words5000000);
+  }),
+  benny.add('normalizeSpaces12', () => {
+    normalizeSpaces12(filePath33mb);
   }),
   benny.cycle(),
   benny.complete()
