@@ -329,11 +329,11 @@ export function normalizeSpaces11(string: string): string {
   return processedChars.toString('utf-8', startIndex, endIndex);
 }
 
-export function normalizeSpaces12(filePath: string): string {
-  const res = execSync(
-    `cat ${filePath} | tr -s "[:space:]" | tr "[:space:][:space:]" " " | tr -s "[:space:]"`,
-    {maxBuffer: 999999999999}
-  );
+export function normalizeSpaces12(text: string): string {
+  const res = execSync(`tr -s "[:space:]" | tr "[:space:][:space:]" " " | tr -s "[:space:]"`, {
+    maxBuffer: 999999999999,
+    input: text,
+  });
 
   return res.toString('utf-8').trim();
 }
