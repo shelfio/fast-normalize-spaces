@@ -3,6 +3,8 @@ import {list} from 'white-space-x';
 import {Buffer} from 'buffer';
 import intoStream from 'into-stream';
 import {execSync} from 'child_process';
+import {Worker} from 'worker_threads';
+import path from 'path';
 
 const whiteSpaceSet = new Set<string>(list.map((item: {string: string}) => item.string));
 const whiteSpaceCodeSet = new Set<number>(list.map((item: {code: number}) => item.code));
@@ -20,6 +22,8 @@ const nonWhiteSpaceRe = new RegExp(`[^${whiteSpaceChars}]+`, 'g');
 const whiteSpaceRe = new RegExp(`[${whiteSpaceChars}]+`, 'g');
 
 const SPACE_CODE = 32;
+
+const workerPath = path.resolve(__dirname, '../lib/worker.js');
 
 /**
  * This method strips leading and trailing white-space from a string,
@@ -336,6 +340,48 @@ export function normalizeSpaces12(text: string): string {
   });
 
   return res.toString('utf-8').trim();
+}
+
+export async function normalizeSpaces13(string: string): Promise<string> {
+  const chars = Buffer.from(string);
+  const charsPart1 = chars.slice(0, chars.length / 2);
+  const charsPart2 = chars.slice(charsPart1.length);
+
+  const isPart1EndsWithSpace = isWhiteSpaceCharCodeIndexedUint8Array(
+    charsPart1[charsPart1.length - 1]
+  );
+  const isPart2StartsWithSpace = isWhiteSpaceCharCodeIndexedUint8Array(charsPart2[0]);
+  const shouldEmbedSpaceBetweenParts = isPart1EndsWithSpace || isPart2StartsWithSpace;
+
+  const [normalizedStringPart1, normalizedStringPart2] = await Promise.all([
+    processChunkOfTextWithWorker(charsPart1),
+    processChunkOfTextWithWorker(charsPart2),
+  ]);
+
+  return Buffer.concat([
+    normalizedStringPart1,
+    shouldEmbedSpaceBetweenParts ? Buffer.from(' ') : Buffer.from(''),
+    normalizedStringPart2,
+  ]).toString('utf8');
+}
+
+async function processChunkOfTextWithWorker(chars: Buffer): Promise<Buffer> {
+  const worker = new Worker(workerPath, {
+    workerData: {
+      chars,
+      whiteSpaceIndexedUint8Array,
+    },
+  });
+
+  return new Promise((resolve, reject) => {
+    worker.on('message', resolve);
+    worker.on('error', reject);
+    worker.on('exit', code => {
+      if (code !== 0) {
+        reject(new Error(`Worker stopped with exit code ${code}`));
+      }
+    });
+  });
 }
 
 function isWhiteSpaceCharCode(charCode: number): boolean {

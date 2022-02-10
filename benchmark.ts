@@ -8,6 +8,7 @@ import {
   normalizeSpaces10,
   normalizeSpaces11,
   normalizeSpaces12,
+  normalizeSpaces13,
   normalizeSpaces2,
   normalizeSpaces3,
   normalizeSpaces4,
@@ -36,6 +37,7 @@ const FUNCTIONS_TO_TEST_SYNC = [
   {name: 'normalizeSpaces10', fn: normalizeSpaces10},
   {name: 'normalizeSpaces11', fn: normalizeSpaces11},
   {name: 'normalizeSpaces12', fn: normalizeSpaces12},
+  {name: 'normalizeSpaces13', fn: normalizeSpaces13},
 ];
 
 const FUNCTIONS_TO_TEST_ASYNC = [{name: 'normalizeSpaces8', fn: normalizeSpaces8}];
