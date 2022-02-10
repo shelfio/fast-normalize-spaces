@@ -343,6 +343,10 @@ export function normalizeSpaces12(text: string): string {
 }
 
 export async function normalizeSpaces13(string: string): Promise<string> {
+  if (string.length < 3145728) {
+    return normalizeSpaces11(string);
+  }
+
   const chars = Buffer.from(string);
   const charsPart1 = chars.slice(0, chars.length / 2);
   const charsPart2 = chars.slice(charsPart1.length);
