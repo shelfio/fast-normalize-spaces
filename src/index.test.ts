@@ -5,9 +5,18 @@ import normalizeSpaceX from 'normalize-space-x';
 import {normalizeSpaces} from './index';
 
 const words5000000 = fLI(5000000, 'w');
+const allWhitespaceChars2018 =
+  '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680' +
+  '\u2000\u2001\u2002\u2003\u2004\u2005' +
+  '\u2006\u2007\u2008\u2009\u200A\u202F' +
+  '\u205F\u3000\u2028\u2029\uFEFF';
 
 it('should normalize spaces', () => {
-  expect(normalizeSpaces('   hello     \n\n\n   \n \n \t world   ')).toEqual('hello world');
+  const result = normalizeSpaces(
+    `${allWhitespaceChars2018}a${allWhitespaceChars2018}b${allWhitespaceChars2018}`
+  );
+
+  expect(result).toEqual('a b');
 });
 
 it('should normalize spaces correctly', () => {
