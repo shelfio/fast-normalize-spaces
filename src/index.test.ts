@@ -2,7 +2,23 @@
 import fLI from 'fast-lorem-ipsum';
 // @ts-ignore
 import normalizeSpaceX from 'normalize-space-x';
-import {normalizeSpaces} from './index';
+import {
+  normalizeSpaces,
+  normalizeSpaces1,
+  normalizeSpaces10,
+  normalizeSpaces11,
+  normalizeSpaces12,
+  normalizeSpaces13,
+  normalizeSpaces14,
+  normalizeSpaces2,
+  normalizeSpaces3,
+  normalizeSpaces4,
+  normalizeSpaces5,
+  normalizeSpaces6,
+  normalizeSpaces7,
+  normalizeSpaces8,
+  normalizeSpaces9,
+} from './index';
 
 const words5000000 = fLI(5000000, 'w');
 const allWhitespaceChars2018 =
@@ -11,18 +27,38 @@ const allWhitespaceChars2018 =
   '\u2006\u2007\u2008\u2009\u200A\u202F' +
   '\u205F\u3000\u2028\u2029\uFEFF';
 
-it('should normalize spaces', () => {
-  const result = normalizeSpaces(
-    `${allWhitespaceChars2018}a${allWhitespaceChars2018}b${allWhitespaceChars2018}`
-  );
+describe.each`
+  normalizeSpaces
+  ${normalizeSpaces1}
+  ${normalizeSpaces2}
+  ${normalizeSpaces3}
+  ${normalizeSpaces4}
+  ${normalizeSpaces5}
+  ${normalizeSpaces6}
+  ${normalizeSpaces7}
+  ${normalizeSpaces8}
+  ${normalizeSpaces9}
+  ${normalizeSpaces10}
+  ${normalizeSpaces11}
+  ${normalizeSpaces12}
+  ${normalizeSpaces13}
+  ${normalizeSpaces14}
+`('spaces normalization', ({normalizeSpaces}) => {
+  describe(`${normalizeSpaces.name}`, () => {
+    it('should normalize text with spaces correctly', () => {
+      const result = normalizeSpaces(
+        `${allWhitespaceChars2018}a${allWhitespaceChars2018}b${allWhitespaceChars2018}`
+      );
 
-  expect(result).toEqual('a b');
-});
+      expect(result).toEqual('a b');
+    });
 
-it('should normalize spaces correctly', () => {
-  expect(normalizeSpaces('   hello     \n\n\n  interesting   \n \n \tworld  😀 ')).toEqual(
-    'hello interesting world 😀'
-  );
+    it('should normalize text with character that consists of surrogate pairs', () => {
+      const result = normalizeSpaces('   hello     \n\n\n  interesting   \n \n \tworld  😀 ');
+
+      expect(result).toEqual('hello interesting world 😀');
+    });
+  });
 });
 
 it('should use much less RAM', () => {
