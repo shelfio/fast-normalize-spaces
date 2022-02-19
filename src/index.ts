@@ -388,6 +388,48 @@ async function processChunkOfTextWithWorker(chars: Buffer): Promise<Buffer> {
   });
 }
 
+export function normalizeSpaces14(string: string): string {
+  const processedChars = new Uint16Array(string.length).fill(SPACE_CODE);
+
+  let lastProcessedIndex = -1;
+  let isLastCharWhitespace = 0;
+
+  for (let i = 0; i < string.length; i++) {
+    const charCode = string[i].charCodeAt(0);
+    const isWhitespace = isWhiteSpaceCharCodeIndexedUint8Array(charCode);
+
+    if (!isWhitespace) {
+      lastProcessedIndex++;
+
+      processedChars[lastProcessedIndex] = charCode;
+    } else {
+      if (isLastCharWhitespace) {
+        continue;
+      }
+
+      lastProcessedIndex++;
+    }
+
+    isLastCharWhitespace = isWhitespace;
+  }
+
+  // If the original string has whitespaces at the start or at the end, the first and the
+  // last processed chars should be single whitespaces, so we need to make offset from both
+  // ends to trim they
+  const firstChar = processedChars[0];
+  const lastChar = processedChars[lastProcessedIndex];
+
+  const startIndex = firstChar === SPACE_CODE ? 1 : 0;
+  const endIndex = lastChar === SPACE_CODE ? lastProcessedIndex : lastProcessedIndex + 1;
+  const length = (endIndex - startIndex) * Uint16Array.BYTES_PER_ELEMENT;
+
+  return Buffer.from(
+    processedChars.buffer,
+    startIndex * Uint16Array.BYTES_PER_ELEMENT,
+    length
+  ).toString('utf16le');
+}
+
 function isWhiteSpaceCharCode(charCode: number): boolean {
   if (charCode >= 9 && charCode <= 13) {
     return true;
