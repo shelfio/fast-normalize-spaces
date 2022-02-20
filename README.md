@@ -19,7 +19,7 @@ normalizeSpaces('   hello     \n\n\n   \n \n \t world   ');
 
 ## Benchmark
 
-The larger the string the faster it gets. Also, it uses **5-10x less memory** (RAM).
+### Speed
 
 | [normalize-space-x](https://github.com/Xotic750/normalize-space-x) | [@shelf/fast-normalize-spaces](https://github.com/shelfio/fast-normalize-spaces) | Improvement |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ----------- |
@@ -28,7 +28,17 @@ The larger the string the faster it gets. Also, it uses **5-10x less memory** (R
 | ~3.3 mb: 14 ops/s, ±4.04%                                          | ~3.3 mb: 147 ops/s, ±0.11%                                                       | 10.5x       |
 | ~33 mb: 1 ops/s, ±11.94%                                           | ~33 mb: 15 ops/s, ±0.15%                                                         | **15x**     |
 
-You can run `yarn benhmark` to test on your own.
+You can run `yarn benchmark:speed` to test on your own.
+
+### Memory usage
+
+The larger the string the faster it gets. Also, it uses **5-10x less memory** (RAM).
+
+Run the following command to test memory usage:
+
+```shell
+yarn benchmark:memory
+```
 
 ## Publish
 

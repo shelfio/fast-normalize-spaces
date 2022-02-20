@@ -17,7 +17,7 @@ import {
   normalizeSpaces7,
   normalizeSpaces8,
   normalizeSpaces9,
-} from './lib';
+} from '../../lib';
 
 const words5000 = fLI(5000, 'w');
 const words50000 = fLI(50000, 'w');
