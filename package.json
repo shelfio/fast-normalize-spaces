@@ -39,10 +39,6 @@
     "extends": "@shelf/babel-config/backend"
   },
   "prettier": "@shelf/prettier-config",
-  "dependencies": {
-    "into-stream": "6",
-    "white-space-x": "4.1.1"
-  },
   "devDependencies": {
     "@babel/cli": "7.16.8",
     "@babel/core": "7.16.12",

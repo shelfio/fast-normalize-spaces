@@ -1,11 +1,11 @@
 const {default: normalizeSpaceX} = require('normalize-space-x');
-const normalizeSpacesFunctions = require('../../lib/index');
+const {normalizeSpaces} = require('../../lib/index');
 
-const allFunctions = {...normalizeSpacesFunctions, normalizeSpaceX};
+const allFunctions = {normalizeSpaceX, normalizeSpaces};
 const functionName = process.argv[2];
-const normalizeSpaces = allFunctions[functionName];
+const normalizationFunction = allFunctions[functionName];
 
-if (!normalizeSpaces) {
+if (!normalizationFunction) {
   console.error(`Unknown function name "${functionName}"`);
 
   process.exit(1);
@@ -18,7 +18,7 @@ const TEXT_SIZE = +process.env.TEXT_SIZE;
 
   const memoryBefore = process.memoryUsage.rss() / 1024 / 1024;
 
-  await normalizeSpaces(data);
+  await normalizationFunction(data);
 
   const memoryAfter = process.memoryUsage.rss() / 1024 / 1024;
 
