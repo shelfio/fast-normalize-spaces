@@ -20,8 +20,9 @@ normalizeSpaces('   hello     \n\n\n   \n \n \t world   ');
 ## Benchmark
 
 All tests was launched on MacBook Pro 2020:
-  - **CPU**: 2 GHz Quad-Core Intel Core i5 10th gen
-  - **RAM**: 16 GB 3733 MHz LPDDR4X
+
+- **CPU**: 2 GHz Quad-Core Intel Core i5 10th gen
+- **RAM**: 16 GB 3733 MHz LPDDR4X
 
 ### Speed
 
@@ -36,9 +37,20 @@ You can run `yarn benchmark:speed` to test on your own.
 
 ### Memory usage
 
-The larger the string the faster it gets. Also, it uses **5-10x less memory** (RAM).
+| Text size | [normalize-space-x](https://github.com/Xotic750/normalize-space-x) | [@shelf/fast-normalize-spaces](https://github.com/shelfio/fast-normalize-spaces) | Improvement |
+| --------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ----------- |
+| 33 kb     | 0.50mb                                                             | 1.29mb                                                                           | -           |
+| 330 kb    | 6.79mb                                                             | 2.16mb                                                                           | 3.14x       |
+| 3.3 mb    | 77.94mb                                                            | 12.35mb                                                                          | 6.3x        |
+| 33 mb     | 498.12mb                                                           | 112.62mb                                                                         | 4.42x       |
+| 100mb     | 1446.14mb                                                          | 338.11mb                                                                         | 4.28x       |
+| 150mb     | 2003.53mb                                                          | 506.54mb                                                                         | 3.96x       |
+| 200mb     | 2660.09mb                                                          | 674.83mb                                                                         | 3.94x       |
 
-Run the following command to test memory usage:
+The larger the string the faster it gets. Memory usage is approximately 3x than the input data size.
+
+Set `TEXT_SIZE` variable value you want in the [test.sh](benchmark/memory/test.sh) script and
+run the following command to test memory usage:
 
 ```shell
 yarn benchmark:memory
