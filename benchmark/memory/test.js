@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const {default: normalizeSpaceX} = require('normalize-space-x');
 const {normalizeSpaces} = require('../../lib/index');
 
