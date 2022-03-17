@@ -1,7 +1,7 @@
 {
   "name": "@shelf/fast-normalize-spaces",
   "version": "0.0.2",
-  "description": "A faster (by 3-15x) implementation of \"normalize-space-x\" package that uses at least 10x less RAM",
+  "description": "A faster (by 16-70%) implementation of \"normalize-space-x\" package that uses at least 3x less RAM",
   "license": "MIT",
   "author": {
     "name": "Vlad Holubiev",
@@ -14,7 +14,8 @@
     "lib"
   ],
   "scripts": {
-    "benchmark": "babel benchmark.ts | node",
+    "benchmark:memory": "yarn build && cd benchmark/memory && ./test.sh",
+    "benchmark:speed": "yarn build && cd benchmark/speed && babel test.ts | node",
     "build": "rm -rf lib/ && yarn build:types && yarn build:code",
     "build:code": "babel src --out-dir lib --ignore '**/*.test.ts' --extensions '.ts' && find ./lib -name '*.test.d.ts' -delete",
     "build:types": "tsc --emitDeclarationOnly --declaration --isolatedModules false --declarationDir lib",
@@ -38,9 +39,6 @@
     "extends": "@shelf/babel-config/backend"
   },
   "prettier": "@shelf/prettier-config",
-  "dependencies": {
-    "white-space-x": "4.1.1"
-  },
   "devDependencies": {
     "@babel/cli": "7.17.6",
     "@babel/core": "7.17.5",
