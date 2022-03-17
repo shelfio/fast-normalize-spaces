@@ -8,7 +8,7 @@ const WHITESPACES_CODES = new Set<number>([
 const WHITESPACES_BITMAP = new Uint8Array(65535).map((_, i) => (WHITESPACES_CODES.has(i) ? 1 : 0));
 
 /**
- * This method strips leading and trailing white-space from a string,
+ * Strips leading and trailing white-space from a string,
  * replaces sequences of whitespace characters by a single space,
  * and returns the resulting string.
  *
