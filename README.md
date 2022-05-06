@@ -1,6 +1,6 @@
 # fast-normalize-spaces [![CircleCI](https://circleci.com/gh/shelfio/fast-normalize-spaces/tree/master.svg?style=svg)](https://circleci.com/gh/shelfio/fast-normalize-spaces/tree/master)![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)
 
-> fast-normalize-spaces description
+> fast-normalize-spaces
 
 ## Install
 
