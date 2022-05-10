@@ -51,7 +51,7 @@
     "benny": "3.7.1",
     "eslint": "8.15.0",
     "fast-lorem-ipsum": "1.2.0",
-    "husky": "8.0.0",
+    "husky": "8.0.1",
     "jest": "28.1.0",
     "lint-staged": "12.4.1",
     "normalize-space-x": "4.1.2",
