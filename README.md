@@ -56,6 +56,12 @@ run the following command to test memory usage:
 yarn benchmark:memory
 ```
 
+## See Also
+
+- [fast-natural-order-by](https://github.com/shelfio/fast-natural-order-by)
+- [fast-uslug](https://github.com/shelfio/fast-uslug)
+- [fast-chunk-string](https://github.com/shelfio/fast-chunk-string)
+
 ## Publish
 
 ```sh
