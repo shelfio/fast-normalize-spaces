@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const {default: normalizeSpaceX} = require('normalize-space-x');
-// const {normalizeSpaces} = require('../../lib/index');
-const {normalizeSpaces} = require('../../../../as-test/index');
+const {normalizeSpaces} = require('../../lib/index');
 
 const allFunctions = {normalizeSpaceX, normalizeSpaces};
 const functionName = process.argv[2];
