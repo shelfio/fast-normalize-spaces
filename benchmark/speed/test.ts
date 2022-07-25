@@ -3,7 +3,8 @@ import benny from 'benny';
 import fLI from 'fast-lorem-ipsum';
 // @ts-ignore
 import normalizeSpaceX from 'normalize-space-x';
-import {normalizeSpaces} from '../../lib';
+// import {normalizeSpaces} from '../../lib';
+import {normalizeSpaces} from '../../../../as-test/index';
 
 const words5000 = fLI(5000, 'w');
 const words50000 = fLI(50000, 'w');
