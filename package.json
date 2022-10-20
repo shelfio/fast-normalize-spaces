@@ -40,8 +40,8 @@
   },
   "prettier": "@shelf/prettier-config",
   "devDependencies": {
-    "@babel/cli": "7.18.10",
-    "@babel/core": "7.18.10",
+    "@babel/cli": "7.19.3",
+    "@babel/core": "7.19.6",
     "@shelf/babel-config": "1.0.2",
     "@shelf/eslint-config": "2.18.0",
     "@shelf/prettier-config": "1.0.0",
