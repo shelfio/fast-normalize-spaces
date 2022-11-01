@@ -1,8 +1,9 @@
 import benny from 'benny';
 // @ts-ignore
 import fLI from 'fast-lorem-ipsum';
-// @ts-ignore
+// eslint-disable-next-line node/no-restricted-import
 import normalizeSpaceX from 'normalize-space-x';
+// @ts-ignore
 import {normalizeSpaces} from '../../lib';
 
 const words5000 = fLI(5000, 'w');
