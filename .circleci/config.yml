@@ -15,7 +15,8 @@ commands:
           pkg-manager: yarn
           cache-version: v1-all
           app-dir: ~/repo
-          override-ci-command: yarn install --pure-lockfile --ignore-scripts --no-progress
+          override-ci-command: npx --yes retry-cli -n 5 -t 3000 -- \
+            yarn install --pure-lockfile --ignore-scripts --no-progress
 
 jobs:
   build:
