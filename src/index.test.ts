@@ -15,6 +15,12 @@ describe('#normalizeSpaces', () => {
     expect(result).toEqual('a b');
   });
 
+  it('should normalize text without spaces at the start and at the end correctly', () => {
+    const result = normalizeSpaces(`a${ALL_WHITESPACE_CHARS_2018}b`);
+
+    expect(result).toEqual('a b');
+  });
+
   it('should normalize text with character that consists of surrogate pairs correctly', () => {
     const result = normalizeSpaces('   hello     \n\n\n  interesting   \n \n \tworld  😀 ');
 
