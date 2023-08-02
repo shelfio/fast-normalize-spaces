@@ -8,6 +8,9 @@
     "email": "vlad@shelf.io",
     "url": "https://shelf.io"
   },
+  "sideEffects": false,
+  "type": "module",
+  "exports": "./lib/index.js",
   "main": "lib",
   "types": "lib/index.d.ts",
   "files": [
@@ -16,9 +19,7 @@
   "scripts": {
     "benchmark:memory": "yarn build && cd benchmark/memory && ./test.sh",
     "benchmark:speed": "yarn build && cd benchmark/speed && babel test.ts | node",
-    "build": "rm -rf lib/ && yarn build:types && yarn build:code",
-    "build:code": "babel src --out-dir lib --ignore '**/*.test.ts' --extensions '.ts' && find ./lib -name '*.test.d.ts' -delete",
-    "build:types": "tsc --emitDeclarationOnly --declaration --isolatedModules false --declarationDir lib",
+    "build": "rm -rf lib/ && tsc",
     "coverage": "yarn test --coverage",
     "lint": "yarn lint:ci --fix",
     "lint:ci": "eslint . --ext .js,.ts,.json",
@@ -35,14 +36,8 @@
       "eslint --fix"
     ]
   },
-  "babel": {
-    "extends": "@shelf/babel-config/backend"
-  },
   "prettier": "@shelf/prettier-config",
   "devDependencies": {
-    "@babel/cli": "7.22.5",
-    "@babel/core": "7.22.5",
-    "@shelf/babel-config": "1.2.0",
     "@shelf/eslint-config": "2.27.1",
     "@shelf/prettier-config": "1.0.0",
     "@shelf/tsconfig": "0.0.11",
