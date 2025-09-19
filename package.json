@@ -17,8 +17,8 @@
     "lib"
   ],
   "scripts": {
-    "benchmark:memory": "yarn build && cd benchmark/memory && ./test.sh",
-    "benchmark:speed": "yarn build && cd benchmark/speed && babel test.ts | node",
+    "benchmark:memory": "yarn build && node benchmark/memory/test.js",
+    "benchmark:speed": "yarn build && node benchmark/speed/test.js",
     "build": "rm -rf lib/ && tsc",
     "coverage": "yarn test --coverage",
     "lint": "yarn lint:ci --fix",

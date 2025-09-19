@@ -1,6 +1,7 @@
 {
   "root": true,
-  "extends": [
-    "@shelf/eslint-config/typescript"
-  ]
+  "extends": ["@shelf/eslint-config/typescript"],
+  "rules": {
+    "multiline-ternary": "off"
+  }
 }

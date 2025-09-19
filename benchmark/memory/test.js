@@ -1,27 +1,35 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const {default: normalizeSpaceX} = require('normalize-space-x');
-const {normalizeSpaces} = require('../../lib/index');
+import {createRequire} from 'module';
 
-const allFunctions = {normalizeSpaceX, normalizeSpaces};
-const functionName = process.argv[2];
-const normalizationFunction = allFunctions[functionName];
+const require = createRequire(import.meta.url);
 
-if (!normalizationFunction) {
-  console.error(`Unknown function name "${functionName}"`);
+const normalizeSpaceXModule = require('normalize-space-x');
+const normalizeSpaceX =
+  typeof normalizeSpaceXModule === 'function'
+    ? normalizeSpaceXModule
+    : normalizeSpaceXModule.default ?? normalizeSpaceXModule;
 
-  process.exit(1);
+const {normalizeSpaces} = await import('../../lib/index.js');
+
+const textSize = Number(process.env.TEXT_SIZE ?? 33 * 1024 * 1024);
+const data = Buffer.alloc(textSize, ' foo   bar  bazz   ').toString();
+
+console.log(`Current testing text size: ${Math.round((textSize / 1024 / 1024) * 100) / 100} MB\n`);
+
+const measurements = [
+  ['normalizeSpaceX', normalizeSpaceX],
+  ['normalizeSpaces', normalizeSpaces],
+];
+
+for (const [label, fn] of measurements) {
+  const delta = measureMemory(fn);
+
+  console.log(`${label}: ${delta} MB`);
 }
 
-const TEXT_SIZE = +process.env.TEXT_SIZE;
+function measureMemory(fn) {
+  const memoryBefore = process.memoryUsage().rss / 1024 / 1024;
+  fn(data);
+  const memoryAfter = process.memoryUsage().rss / 1024 / 1024;
 
-(async () => {
-  const data = Buffer.alloc(TEXT_SIZE, ' foo   bar  bazz   ').toString();
-
-  const memoryBefore = process.memoryUsage.rss() / 1024 / 1024;
-
-  await normalizationFunction(data);
-
-  const memoryAfter = process.memoryUsage.rss() / 1024 / 1024;
-
-  process.stdout.write(`${memoryAfter - memoryBefore}`);
-})();
+  return memoryAfter - memoryBefore;
+}
