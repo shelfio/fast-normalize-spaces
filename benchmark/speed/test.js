@@ -8,13 +8,13 @@ const normalizeSpaceXModule = require('normalize-space-x');
 const normalizeSpaceX =
   typeof normalizeSpaceXModule === 'function'
     ? normalizeSpaceXModule
-    : normalizeSpaceXModule.default ?? normalizeSpaceXModule;
+    : (normalizeSpaceXModule.default ?? normalizeSpaceXModule);
 
 const fastLoremIpsumModule = require('fast-lorem-ipsum');
 const fastLoremIpsum =
   typeof fastLoremIpsumModule === 'function'
     ? fastLoremIpsumModule
-    : fastLoremIpsumModule.default ?? fastLoremIpsumModule;
+    : (fastLoremIpsumModule.default ?? fastLoremIpsumModule);
 
 const words5000 = fastLoremIpsum(5000, 'w');
 const words50000 = fastLoremIpsum(50000, 'w');

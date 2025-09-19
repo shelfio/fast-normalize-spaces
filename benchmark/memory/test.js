@@ -6,7 +6,7 @@ const normalizeSpaceXModule = require('normalize-space-x');
 const normalizeSpaceX =
   typeof normalizeSpaceXModule === 'function'
     ? normalizeSpaceXModule
-    : normalizeSpaceXModule.default ?? normalizeSpaceXModule;
+    : (normalizeSpaceXModule.default ?? normalizeSpaceXModule);
 
 const {normalizeSpaces} = await import('../../lib/index.js');
 
