@@ -1,6 +1,7 @@
 import {createRequire} from 'module';
 import benny from 'benny';
 import {normalizeSpaces} from '../../lib/index.js';
+import {STRESS_SCENARIOS, buildBenchmarkCorpus} from '../../lib/__fixtures__/stress-scenarios.js';
 
 const require = createRequire(import.meta.url);
 
@@ -10,61 +11,46 @@ const normalizeSpaceX =
     ? normalizeSpaceXModule
     : (normalizeSpaceXModule.default ?? normalizeSpaceXModule);
 
-const fastLoremIpsumModule = require('fast-lorem-ipsum');
-const fastLoremIpsum =
-  typeof fastLoremIpsumModule === 'function'
-    ? fastLoremIpsumModule
-    : (fastLoremIpsumModule.default ?? fastLoremIpsumModule);
+const TARGET_BYTES = [
+  Math.round(33 * 1024),
+  Math.round(330 * 1024),
+  Math.round(3.3 * 1024 * 1024),
+  33 * 1024 * 1024,
+];
 
-const words5000 = fastLoremIpsum(5000, 'w');
-const words50000 = fastLoremIpsum(50000, 'w');
-const words500000 = fastLoremIpsum(500000, 'w');
-const words5000000 = fastLoremIpsum(5000000, 'w');
+const corpora = buildBenchmarkCorpus(TARGET_BYTES);
 
-await benny.suite(
-  '~33kb',
-  benny.add('@shelf/fast-normalize-spaces', () => {
-    normalizeSpaces(words5000);
-  }),
-  benny.add('normalize-space-x', () => {
-    normalizeSpaceX(words5000);
-  }),
-  benny.cycle(),
-  benny.complete()
-);
+console.log(`Preparing benchmark corpora with ${STRESS_SCENARIOS.length} stress scenarios\n`);
 
-await benny.suite(
-  '~330kb',
-  benny.add('@shelf/fast-normalize-spaces', () => {
-    normalizeSpaces(words50000);
-  }),
-  benny.add('normalize-space-x', () => {
-    normalizeSpaceX(words50000);
-  }),
-  benny.cycle(),
-  benny.complete()
-);
+for (const [index, {label, text}] of corpora.entries()) {
+  const targetBytes = TARGET_BYTES[index];
+  const bytes = Buffer.byteLength(text, 'utf8');
 
-await benny.suite(
-  '~3.3mb',
-  benny.add('@shelf/fast-normalize-spaces', () => {
-    normalizeSpaces(words500000);
-  }),
-  benny.add('normalize-space-x', () => {
-    normalizeSpaceX(words500000);
-  }),
-  benny.cycle(),
-  benny.complete()
-);
+  console.log(
+    `${label}: target ${formatBytes(targetBytes)}, actual ${formatBytes(bytes)} (${bytes} bytes)`
+  );
 
-await benny.suite(
-  '~33mb',
-  benny.add('@shelf/fast-normalize-spaces', () => {
-    normalizeSpaces(words5000000);
-  }),
-  benny.add('normalize-space-x', () => {
-    normalizeSpaceX(words5000000);
-  }),
-  benny.cycle(),
-  benny.complete()
-);
+  await benny.suite(
+    label,
+    benny.add('@shelf/fast-normalize-spaces', () => {
+      normalizeSpaces(text);
+    }),
+    benny.add('normalize-space-x', () => {
+      normalizeSpaceX(text);
+    }),
+    benny.cycle(),
+    benny.complete()
+  );
+}
+
+function formatBytes(bytes) {
+  if (bytes >= 1024 * 1024) {
+    return `${(bytes / 1024 / 1024).toFixed(2)}mb`;
+  }
+
+  if (bytes >= 1024) {
+    return `${(bytes / 1024).toFixed(2)}kb`;
+  }
+
+  return `${bytes}b`;
+}

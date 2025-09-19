@@ -1,4 +1,5 @@
 import {createRequire} from 'module';
+import {STRESS_SCENARIOS, buildBenchmarkText} from '../../lib/__fixtures__/stress-scenarios.js';
 
 const require = createRequire(import.meta.url);
 
@@ -11,9 +12,12 @@ const normalizeSpaceX =
 const {normalizeSpaces} = await import('../../lib/index.js');
 
 const textSize = Number(process.env.TEXT_SIZE ?? 33 * 1024 * 1024);
-const data = Buffer.alloc(textSize, ' foo   bar  bazz   ').toString();
+const data = buildBenchmarkText(textSize);
+const actualBytes = Buffer.byteLength(data, 'utf8');
 
-console.log(`Current testing text size: ${Math.round((textSize / 1024 / 1024) * 100) / 100} MB\n`);
+console.log(
+  `Current testing text size: ${Math.round((actualBytes / 1024 / 1024) * 100) / 100} MB (target ${textSize} bytes) using ${STRESS_SCENARIOS.length} scenarios\n`
+);
 
 const measurements = [
   ['normalizeSpaceX', normalizeSpaceX],
