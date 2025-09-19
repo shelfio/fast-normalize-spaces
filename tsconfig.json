@@ -7,7 +7,8 @@
     "moduleResolution": "node",
     "declaration": true,
     "resolveJsonModule": false,
-    "outDir": "lib"
+    "outDir": "lib",
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", "**/*.test.*", "**/*.mock.ts"],
   "include": ["src"]
