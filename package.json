@@ -17,6 +17,7 @@
     "lib"
   ],
   "scripts": {
+    "benchmark": "yarn benchmark:memory && yarn benchmark:speed",
     "benchmark:memory": "yarn build && node benchmark/memory/test.js",
     "benchmark:speed": "yarn build && node benchmark/speed/test.js",
     "build": "rm -rf lib/ && tsc",
