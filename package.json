@@ -52,7 +52,7 @@
     "jest": "30.2.0",
     "lint-staged": "16.2.7",
     "normalize-space-x": "4.1.2",
-    "prettier": "3.6.2",
+    "prettier": "3.7.3",
     "ts-node": "10.9.2",
     "typescript": "5.9.3"
   },
