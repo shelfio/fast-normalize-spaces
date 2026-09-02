@@ -5,7 +5,7 @@
 ## Install
 
 ```
-$ yarn add @shelf/fast-normalize-spaces
+$ pnpm add @shelf/fast-normalize-spaces
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ Benchmarks reuse the same pool of 45 worst-case scenarios that cover multilingua
 | ~3.3 mb  | 20 ops/s, ±1.62%                                                   | 152 ops/s, ±0.36%                                                                | 7.6x    |
 | ~33 mb   | 2 ops/s, ±6.05%                                                    | 16 ops/s, ±0.76%                                                                 | 8.0x    |
 
-You can run `yarn benchmark:speed` to test on your own.
+You can run `pnpm benchmark:speed` to test on your own.
 
 ### Memory usage
 
@@ -54,7 +54,7 @@ The result is a jump from ~10k ops/s to 15.8k ops/s on 33 KB payloads and 5.7–
 Set a custom payload by exporting `TEXT_SIZE` (in bytes) when running the benchmark:
 
 ```shell
-TEXT_SIZE=$((10 * 1024 * 1024)) yarn benchmark:memory
+TEXT_SIZE=$((10 * 1024 * 1024)) pnpm benchmark:memory
 ```
 
 ## See Also
@@ -67,8 +67,8 @@ TEXT_SIZE=$((10 * 1024 * 1024)) yarn benchmark:memory
 
 ```sh
 $ git checkout master
-$ yarn version
-$ yarn publish
+$ pnpm version
+$ pnpm publish
 $ git push origin master --tags
 ```
 
