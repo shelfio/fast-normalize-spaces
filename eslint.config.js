@@ -1,4 +1,4 @@
-import shelfTypescript from '@shelf/eslint-config/typescript.js';
+import shelfTypescript from '@shelf/eslint-config/typescript-no-prettier.js';
 
 export default [
   {
