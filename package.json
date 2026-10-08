@@ -37,8 +37,8 @@
       "oxfmt --no-error-on-unmatched-pattern"
     ],
     "*.{js,ts,json}": [
-      "oxfmt --no-error-on-unmatched-pattern",
-      "eslint --fix"
+      "eslint --fix",
+      "oxfmt --no-error-on-unmatched-pattern"
     ]
   },
   "devDependencies": {
