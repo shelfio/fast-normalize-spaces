@@ -27,6 +27,7 @@
     "lint": "oxfmt && eslint . --fix",
     "lint:ci": "oxfmt --check && eslint .",
     "prepack": "pnpm build",
+    "prepare": "husky",
     "test": "TZ=UTC jest src",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch"
