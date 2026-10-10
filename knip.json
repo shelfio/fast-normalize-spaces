@@ -1,4 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "ignoreDependencies": ["ts-node"]
+  "ignoreDependencies": ["ts-node"],
+  "ignoreIssues": {
+    "src/__fixtures__/stress-scenarios.ts": ["exports"]
+  }
 }
