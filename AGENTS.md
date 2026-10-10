@@ -8,7 +8,7 @@
 - `pnpm test` runs the Jest tests in `src`; `pnpm coverage` also reports coverage.
 - `pnpm lint` formats with oxfmt and fixes lint; CI runs `pnpm lint:ci`.
 - `pnpm type-check` type-checks the package; `pnpm build` compiles `src` to `lib`.
-- `pnpm benchmark:speed` and `pnpm benchmark:memory` build the package and compare it with `normalize-space-x`; `TEXT_SIZE` sets the payload size in bytes.
+- `pnpm benchmark:speed` and `pnpm benchmark:memory` build the package and compare it with `normalize-space-x`. `TEXT_SIZE` sets the payload size in bytes for the memory benchmark only.
 - `pnpm find-deadcode` lists unused files, exports, and dependencies.
 
 ## Rules
