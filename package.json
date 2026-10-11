@@ -57,7 +57,7 @@
     "knip": "6.38.0",
     "lint-staged": "16.4.0",
     "normalize-space-x": "4.1.2",
-    "oxfmt": "0.64.0",
+    "oxfmt": "0.70.0",
     "ts-node": "10.9.2",
     "typescript": "npm:@typescript/typescript6@6.0.2"
   },
